@@ -17,7 +17,7 @@ set -eu
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
-REPO="${FLAPJACK_REPO:-gridlhq-staging/flapjack}"
+REPO="${FLAPJACK_REPO:-gridlhq/flapjack}"
 BINARY_NAME="flapjack"
 INSTALL_DIR="${FLAPJACK_INSTALL:-$HOME/.flapjack}/bin"
 
