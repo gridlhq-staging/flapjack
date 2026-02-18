@@ -155,6 +155,12 @@ pub async fn serve() -> Result<(), Box<dyn std::error::Error>> {
     // Use bind_addr from node.json, falling back to env var
     let bind_addr = node_config.bind_addr.clone();
 
+    // Initialize analytics cluster client (for HA analytics fan-out)
+    if let Some(cluster_client) = crate::analytics_cluster::AnalyticsClusterClient::new(&node_config) {
+        crate::analytics_cluster::set_global_cluster(cluster_client);
+        tracing::info!("[HA-analytics] Cluster analytics enabled: fan-out to {} peers", node_config.peers.len());
+    }
+
     let replication_manager = if !node_config.peers.is_empty() {
         tracing::info!("Replication enabled: {} peers", node_config.peers.len());
         let repl = flapjack_replication::manager::ReplicationManager::new(node_config);
